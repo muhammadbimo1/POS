@@ -35,7 +35,18 @@ func (s *server) Run() {
 		}
 	} else {
 		db := s.infra.SqlDb()
-		err := db.AutoMigrate(&entity.CustomerOrder{}, entity.CustomerOrderDetail{})
+		err := db.AutoMigrate(&entity.CustomerOrder{}, entity.CustomerOrderDetail{}, entity.Payment{}, entity.OrderPayment{})
+		db.Unscoped().Where("id like ?", "%%").Delete(entity.Payment{})
+		db.Model(&entity.Payment{}).Save([]entity.Payment{
+			{
+				ID:                "P01",
+				PaymentMethodName: "Tunai",
+			},
+			{
+				ID:                "P02",
+				PaymentMethodName: "OPO",
+			},
+		})
 		if err != nil {
 			log.Panicln(err)
 		}

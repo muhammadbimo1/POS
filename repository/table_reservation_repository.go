@@ -47,6 +47,9 @@ func (t *tableReservationRepository) CallTableCheckIn(table dto.TableRequest) er
 		return errors.New("check in error")
 	}
 	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
 	var responseMessage appresponse.ResponseMessage
 	err = json.Unmarshal(body, &responseMessage)
 	if err != nil {

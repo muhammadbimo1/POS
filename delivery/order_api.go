@@ -53,6 +53,11 @@ func (o *OrderApi) closeBill(c *gin.Context) {
 		response.SendError(*appresponse.NewBadRequestError(err, "bind json error"))
 		return
 	}
+	closeBillRequest.Total, err = o.usecase.GetTotal(closeBillRequest.BillNo)
+	if err != nil {
+		response.SendError(*appresponse.NewInternalServerError(err, "Something went in get total"))
+		return
+	}
 	order, err := o.usecase.CloseBill(closeBillRequest)
 	if err != nil {
 		response.SendError(*appresponse.NewInternalServerError(err, "Something went in closebill  usecase"))

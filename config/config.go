@@ -11,11 +11,17 @@ type Config struct {
 	ApiBaseUrl            string
 	RunMigration          string
 	TableManagementConfig TableManagementConfig
+	OpoPaymentConfig      OpoPaymentConfig
 	DataSourceName        string
 }
 
 type TableManagementConfig struct {
 	ApiBaseUrl string
+}
+
+type OpoPaymentConfig struct {
+	ApiBaseUrl      string
+	ClientSecretKey string
 }
 
 func NewConfig() *Config {
@@ -32,9 +38,12 @@ func NewConfig() *Config {
 	config.DataSourceName = dsn
 
 	tableManagementBaseUrl := "http://localhost:8081/api/table"
+	opoBaseURL := "http://159.223.42.164:8899/opo/payment"
+	secretKey := "E157934D-EA2E-49F6-9DCE-398B750BE4F0"
 	tableManagementConfig := TableManagementConfig{ApiBaseUrl: tableManagementBaseUrl}
+	opoPaymentConfig := OpoPaymentConfig{ApiBaseUrl: opoBaseURL, ClientSecretKey: secretKey}
+	config.OpoPaymentConfig = opoPaymentConfig
 	config.TableManagementConfig = tableManagementConfig
-
 	r := gin.Default()
 	config.RouterEngine = r
 	config.ApiBaseUrl = fmt.Sprintf("%s:%s", apiHost, apiport)

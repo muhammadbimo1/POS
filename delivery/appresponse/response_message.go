@@ -11,6 +11,11 @@ type ResponseMessage struct {
 	Data        interface{} `json:"data"`
 }
 
+type OpoResponseMessage struct {
+	Message string `json:"message"`
+	Data    string `json:"data"`
+}
+
 type ErrorMessage struct {
 	Errcode          int    `json:"code"`
 	ErrorDescription string `json:"message"`
